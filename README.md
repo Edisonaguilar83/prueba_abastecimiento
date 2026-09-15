@@ -18,6 +18,60 @@ Anticipar la demanda de cada producto en cada tienda para la siguiente semana y 
 
 La historia tiene 91 días, 20 tiendas, 8 productos y 160 series SKU–tienda.
 
+### 2.1 Diagrama entidad-relación
+
+Dos catálogos (Tienda, Producto) conectados por tres tablas asociativas de distinto grano: un histórico diario de ventas, una foto de inventario y una etiqueta de tendencia que **no** entra como predictor.
+
+```mermaid
+erDiagram
+    TIENDA ||--o{ VENTAS_HISTORICAS : "vende en"
+    PRODUCTO ||--o{ VENTAS_HISTORICAS : "se vende como"
+    TIENDA ||--o{ INVENTARIO_ACTUAL : "tiene stock de"
+    PRODUCTO ||--o{ INVENTARIO_ACTUAL : "tiene stock de"
+    TIENDA ||--o{ GROUND_TRUTH_TRENDS : "etiquetada en"
+    PRODUCTO ||--o{ GROUND_TRUTH_TRENDS : "etiquetado en"
+
+    TIENDA {
+        string id_tienda PK
+        string ciudad
+        int tamano_m2
+    }
+    PRODUCTO {
+        string id_producto PK
+        string nombre
+        string categoria
+        int costo_unitario
+        int precio_venta
+        int costo_almacenamiento_semanal
+    }
+    VENTAS_HISTORICAS {
+        date fecha PK
+        string id_tienda FK
+        string id_producto FK
+        int unidades_vendidas
+    }
+    INVENTARIO_ACTUAL {
+        string id_tienda PK_FK
+        string id_producto PK_FK
+        int stock_actual
+    }
+    GROUND_TRUTH_TRENDS {
+        string id_tienda PK_FK
+        string id_producto PK_FK
+        string trend_type
+    }
+```
+
+| Archivo | Tipo | Clave | Columnas propias |
+|---|---|---|---|
+| `maestro_tiendas.csv` | Catálogo | `id_tienda` | ciudad, tamaño_m2 |
+| `catalogo_productos.csv` | Catálogo | `id_producto` | nombre, categoria, costo_unitario, precio_venta, costo_almacenamiento_semanal |
+| `ventas_historicas.csv` | Asociativa | `fecha + id_tienda + id_producto` | unidades_vendidas |
+| `inventario_actual.csv` | Asociativa | `id_tienda + id_producto` | stock_actual |
+| `ground_truth_trends.csv` | Asociativa | `id_tienda + id_producto` | trend_type |
+
+`ventas_historicas.csv` es la única tabla con dimensión temporal (14,560 filas = 160 series × 91 días); `inventario_actual.csv` es un único snapshot (160 filas) — por eso el backtest económico de la sección 7 es contrafactual, no una reconstrucción de la operación real.
+
 ## 3. Preparación y features
 
 `src/data_preparation.py` valida las claves y construye datasets derivados desde `data/raw/`. Las features incluyen:
