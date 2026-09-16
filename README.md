@@ -257,29 +257,18 @@ Si además se quiere poder **regenerar los resultados desde la app** (botones "G
 5. Si `outputs/` no existe todavía, la app muestra un aviso y un botón **"Generar resultados (corre el pipeline completo)"** que ejecuta el mismo flujo que `python main.py` (requiere `data/raw/`).
 6. En cualquier momento, el botón **"Volver a generar"** reentrena el forecasting, recalcula el backtest económico y refresca el dashboard con los nuevos resultados.
 
-### 11.3 Qué muestra el dashboard
+### 11.3 Qué muestra la app
 
 - **KPIs**: SKUs con pedido óptimo > 0, unidades totales a pedir, WAPE del modelo champion, fill rate de la política económica.
-- **Recomendaciones**: tabla filtrable por tienda y producto (`resultado_final_supply_optimization.csv`), con explicación en lenguaje natural de cada recomendación (pronóstico, incertidumbre, ratio crítico, política de riesgo y ahorro esperado).
+- **Recomendaciones**: tabla filtrable por tienda y producto (`resultado_final_supply_optimization.csv`), con explicación de cada recomendación (pronóstico, incertidumbre, ratio crítico, política de riesgo y ahorro esperado).
 - **Forecasting**: comparación de RMSE/MAE/WAPE entre Seasonal Naive, Strategy A y Strategy B, y evolución del WAPE del champion por semana de origen (rolling-origin).
 - **Backtest de política**: costo total, fill rate, faltantes y excedentes por política (forecast / economic / p80), y el ahorro de la política económica por producto.
 
-## 12. Defensa en entrevista
+## 12. Limitaciones y roadmap
 
-**¿Por qué validación temporal?** Porque la decisión real solo puede usar información disponible hasta el momento del pedido.
-
-**¿Por qué Strategy B?** En esta corrida es la que obtiene menor RMSE, MAE y WAPE en rolling-origin. No se elige por conveniencia narrativa: se elige por desempeño medido.
-
-**¿Por qué no usar solo el forecast?** Porque dos SKU con la misma demanda esperada pueden tener costos de error distintos por margen y costo de exceso.
-
-**¿Qué significa el ahorro de $1.03 M?** Es una estimación contrafactual del backtest económico; no es ahorro histórico de Tostao.
-
-## 13. Limitaciones y roadmap
-
-1. Incorporar inventario histórico y órdenes de compra reales.
-2. Modelar lead time, frecuencia de reposición y stock en tránsito.
-3. Separar merma, perecibilidad, salvage y costo financiero.
-4. Calibrar intervalos por SKU–tienda y evaluar conformal prediction.
-5. Incorporar promociones, festivos y eventos.
-6. Agregar restricciones de capacidad, presupuesto y múltiplos de pedido.
-7. Automatizar monitoreo de drift y reentrenamiento.
+1. Modelar lead time, frecuencia de reposición y stock en tránsito.
+2. Separar merma, perecibilidad, salvage y costo financiero.
+3. Incorporar promociones, festivos y eventos.
+4. Agregar restricciones de capacidad, presupuesto y múltiplos de pedido.
+5. Agregar geolocalización de las tiendas y puntos de abastecimiento.
+6. Agregar costo de abastecimiento.
