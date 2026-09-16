@@ -1,6 +1,6 @@
 ## Autor
 
-*Nombre:* Edinson Vicente Aguilar Rodriguez
+Edinson Vicente Aguilar Rodriguez
 ___
 # Tostao — Case A: Optimización de abastecimiento
 
