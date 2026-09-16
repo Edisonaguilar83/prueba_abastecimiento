@@ -1,6 +1,10 @@
-# Tostao — Case A: Supply Optimization
+# Tostao — Case A: Optimización de abastecimiento
 
-Solución reproducible de **Data Science + Machine Learning + optimización económica** para pronosticar la demanda semanal por SKU–tienda y convertir el forecast en una recomendación de pedido.
+## Información del Autor
+
+*Nombre:* Edinson Vicente Aguilar Rodriguez    
+
+El proyecto parte de una necesidad concreta: anticipar cuánto se va a vender de cada SKU en cada tienda para tomar mejores decisiones de abastecimiento. Para esto, se construye un pronóstico de demanda semanal y, a partir de ese resultado, se determina una cantidad recomendada de pedido.
 
 ## 1. Objetivo de negocio
 
